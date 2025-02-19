@@ -28,24 +28,7 @@ export default function Home() {
     setIsModalOpen(!isModalOpen);
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        alert("복사 완료!");
-      })
-      .catch((err) => {
-        console.error("복사 실패:", err);
-      });
-  };
-
   const router = useRouter();
-  const address = {
-    "Бүс нутаг": ["内蒙古自治区", "锡林郭勒盟", "二连浩特市"],
-    Хаяг: "内蒙古二连浩特市南环南路208国道东利众物流东门E4-02号 通冠货运部 Uni Сargo",
-    Дугаар: "15947291311",
-    Нэр: "通拉嘎",
-  };
 
   const images = [
     "https://cloud.appwrite.io/v1/storage/buckets/67b5b2da003a37fc8428/files/67b5b2ed000ec11625ec/view?project=67b5b2ce000141413e86&mode=admin",
@@ -219,7 +202,7 @@ export default function Home() {
 
       <footer className="w-full flex text-white py-5 items-center justify-center">
         <div className="flex items-center mx-auto gap-4">
-          <img
+          <Image
             src="qr.jpg"
             alt="QR"
             className="h-auto rounded-md flex justify-center w-20 h-20"

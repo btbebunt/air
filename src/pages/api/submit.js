@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     const { name, contact, serviceType, pickupDate, dropoffDate, flightNumber, meetingAddress, note } = req.body;
 
     // Notion 페이지 생성
-    const response = await notion.pages.create({
+    await notion.pages.create({
       parent: { database_id: databaseId },
       properties: {
         'Name': { title: [{ text: { content: name } }] },

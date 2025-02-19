@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import {
@@ -70,6 +69,7 @@ export default function Home() {
       setError(
         "예약 처리 중 오류가 발생했습니다. 카카오톡으로 직접 문의해주세요."
       );
+      console.log(err)
     } finally {
       setIsSubmitting(false);
     }
