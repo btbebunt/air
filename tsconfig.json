@@ -17,6 +17,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/api/bookings.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/api/bookings.js", "next.config.js"],
   "exclude": ["node_modules"]
 }
