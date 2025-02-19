@@ -9,6 +9,7 @@ import { TypeAnimation } from "react-type-animation";
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // 슬라이드 이미지 인덱스 상태
+  const [isLoading, setIsLoading] = useState(true);
   const ref = useRef<HTMLDivElement | null>(null);
   const touchStartX = useRef(0);
   useEffect(() => {
@@ -60,7 +61,9 @@ export default function Home() {
       prevImage();
     }
   };
-
+  const handleImageLoad = () => {
+    setIsLoading(false); // Image has loaded, stop showing the loader
+  };
   return (
     <div className="min-h-screen flex flex-col justify-between py-6 px-4 sm:px-6 lg:px-8">
       <div className="w-full mx-auto items-center">
@@ -158,10 +161,7 @@ export default function Home() {
       {/* 이미지 슬라이드 모달 */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div
-            className="bg-white p-6 rounded-md w-[90%] md:w-[400px] overflow-hidden max-h-[90vh] flex flex-col items-center"
-            ref={ref}
-          >
+          <div className="bg-white p-6 rounded-md w-[90%] md:w-[400px] overflow-hidden max-h-[90vh] flex flex-col items-center">
             <div className="flex justify-between items-center w-full">
               <h2 className="text-lg font-bold mb-4">서비스 이용 후기</h2>
               <button
@@ -172,19 +172,28 @@ export default function Home() {
               </button>
             </div>
 
+            {/* Image display section */}
             <div
               className="relative w-full flex justify-center items-center"
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
             >
+              {isLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                  <div className="spinner-border animate-spin h-10 w-10 border-t-2 border-white rounded-full"></div>
+                </div>
+              )}
               <Image
                 src={images[currentImageIndex]}
                 alt={`Slide ${currentImageIndex + 1}`}
                 width={600}
                 height={350}
                 className="w-full h-auto rounded-md"
+                onLoadingComplete={handleImageLoad} // Set loader to false once the image is loaded
               />
             </div>
+
+            {/* Navigation buttons for the image slider */}
             <div className="flex mt-4 gap-4">
               <button
                 onClick={prevImage}
@@ -199,6 +208,8 @@ export default function Home() {
                 {">"}
               </button>
             </div>
+
+            {/* Close button */}
             <button
               onClick={toggleModal}
               className="mt-4 w-full py-2 bg-gray-500 text-white rounded-md"
@@ -208,7 +219,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
       <footer className="w-full flex text-white py-5 items-center justify-center">
         <div className="flex items-center mx-auto gap-4">
           <img
