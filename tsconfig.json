@@ -14,9 +14,9 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/api/bookings.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/api/bookings.js"],
   "exclude": ["node_modules"]
 }

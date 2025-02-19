@@ -202,7 +202,7 @@ export default function Home() {
 
       <footer className="w-full flex text-white py-5 items-center justify-center">
         <div className="flex items-center mx-auto gap-4">
-          <Image
+          <img
             src="qr.jpg"
             alt="QR"
             className="h-auto rounded-md flex justify-center w-20 h-20"
