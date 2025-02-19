@@ -6,7 +6,7 @@ import { Noto_Sans_KR } from "next/font/google";
 const inter = Noto_Sans_KR({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "900"],
-  fallback: ["sans-serif"]
+  fallback: ["sans-serif"],
 });
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <main className={`${inter.className}`}>
       <Head>
         <meta charSet="UTF-8" />
-        <title>예약 신청 | Airport Mongol</title>
+        <title>칭기즈칸 국제공항 픽업/샌딩 서비스</title>
         <meta
           name="description"
           content="공항 픽업 및 샌딩 서비스 예약 신청 페이지"
@@ -25,7 +25,10 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <meta name="author" content="Airport Mongol" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="예약 신청 | Airport Mongol" />
+        <meta
+          property="og:title"
+          content="칭기즈칸 국제공항 픽업/샌딩 서비스"
+        />
         <meta
           property="og:description"
           content="공항 픽업 및 샌딩 서비스 예약 신청 페이지"
@@ -33,7 +36,10 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta property="og:image" content="/logo1.png" />
         <meta property="og:url" content="https://airportmongol.vercel.app/" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="예약 신청 | Airport Mongol" />
+        <meta
+          name="twitter:title"
+          content="칭기즈칸 국제공항 픽업/샌딩 서비스"
+        />
         <meta
           name="twitter:description"
           content="공항 픽업 및 샌딩 서비스 예약 신청 페이지"
