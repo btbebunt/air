@@ -41,7 +41,7 @@ export default async function handler(req, res) {
 
    // 텔레그램 메시지 내용 동적으로 생성 (null 또는 빈 값 제외)
 const messageLines = [
-  `📌${serviceType} 예약 정보:`,
+  `*${serviceType} 예약 정보:`,
   `👤 이름: ${name}`,
   `📞 카카오 ID: ${contact}`,
   pickupDateUTC8 ? `📅 픽업 날짜: ${pickupDateUTC8}` : null,

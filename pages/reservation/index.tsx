@@ -54,11 +54,11 @@ export default function Home() {
     setIsSubmitting(true);
     setError("");
 
-    const adjustedFormData = {
-      ...formData,
-      pickupDate: adjustToUTC8(formData.pickupDate),
-      dropoffDate: adjustToUTC8(formData.dropoffDate),
-    };
+    // const adjustedFormData = {
+    //   ...formData,
+    //   pickupDate: adjustToUTC8(formData.pickupDate),
+    //   dropoffDate: adjustToUTC8(formData.dropoffDate),
+    // };
 
     try {
       // Show the confirmation modal
@@ -340,7 +340,7 @@ export default function Home() {
             <h2 className="flex justify-center text-lg font-bold mb-4">
               예약 완료
             </h2>
-            <p>
+            <p className="flex justify-center">
               예약이 성공적으로 완료되었습니다. <br />
               카카오톡으로 빠른 연락을 드리겠습니다!
             </p>
