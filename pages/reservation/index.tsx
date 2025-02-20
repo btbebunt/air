@@ -14,7 +14,7 @@ import {
 interface FormData {
   name: string;
   contact: string;
-  serviceType: "픽업" | "샌딩" | "픽업&샌딩";
+  serviceType: "픽업" | "샌딩" | "픽업&샌딩" | "맞춤 투어";
   pickupDate: string;
   dropoffDate: string;
   flightNumber: string;
@@ -162,74 +162,62 @@ export default function Home() {
               <option value="픽업">공항 픽업 서비스</option>
               <option value="샌딩">공항 샌딩 서비스</option>
               <option value="픽업&샌딩">픽업 & 샌딩 서비스</option>
+              <option value="맞춤 투어">맞춤 투어</option>
             </select>
           </div>
+          {formData.serviceType !== "맞춤 투어" && (
+            <>
+              {formData.serviceType !== "샌딩" && (
+                <div>
+                  <label className="block text-sm mb-1 font-bold">
+                    <FaCalendar className="inline mr-2" /> 픽업 날짜
+                  </label>
+                  <input
+                    type="datetime-local"
+                    name="pickupDate"
+                    className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                    value={formData.pickupDate}
+                    onChange={handleChange}
+                  />
+                </div>
+              )}
 
-          {formData.serviceType !== "샌딩" && (
-            <div>
-              <label className="block text-sm mb-1 font-bold">
-                <FaCalendar className="inline mr-2" /> 픽업 날짜
-              </label>
-              <input
-                type="datetime-local"
-                name="pickupDate"
-                required
-                className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
-                value={formData.pickupDate}
-                onChange={handleChange}
-              />
-            </div>
+              {formData.serviceType !== "픽업" && (
+                <div>
+                  <label className="block text-sm mb-1 font-bold">
+                    <FaCalendar className="inline mr-2" /> 샌딩 날짜
+                  </label>
+                  <input
+                    type="datetime-local"
+                    name="dropoffDate"
+                    className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                    value={formData.dropoffDate}
+                    onChange={handleChange}
+                  />
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm mb-1 font-bold">
+                  <FaPlane className="inline mr-2" /> 항공편 번호
+                </label>
+                <input
+                  type="text"
+                  name="flightNumber"
+                  className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600"
+                  value={formData.flightNumber}
+                  onChange={handleChange}
+                />
+              </div>
+            </>
           )}
 
-          {formData.serviceType !== "픽업" && (
-            <div>
-              <label className="block text-sm mb-1 font-bold">
-                <FaCalendar className="inline mr-2" /> 샌딩 날짜
-              </label>
-              <input
-                type="datetime-local"
-                name="dropoffDate"
-                required
-                className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600"
-                value={formData.dropoffDate}
-                onChange={handleChange}
-              />
-            </div>
-          )}
-
-          {(formData.serviceType === "샌딩" ||
-            formData.serviceType === "픽업&샌딩") && (
-            <div>
-              <label className="block text-sm mb-1 font-bold">
-                <FaMapMarkerAlt className="inline mr-2" /> 샌딩 미팅 장소
-              </label>
-              <input
-                type="text"
-                name="meetingAddress"
-                className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600"
-                value={formData.meetingAddress}
-                onChange={handleChange}
-                placeholder="예: 서울역 입구"
-              />
-            </div>
-          )}
-
-          <div>
+<div>
             <label className="block text-sm mb-1 font-bold">
-              <FaPlane className="inline mr-2" /> 항공편 번호
-            </label>
-            <input
-              type="text"
-              name="flightNumber"
-              className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600"
-              value={formData.flightNumber}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm mb-1 font-bold">
-              <FaComment className="inline mr-2" /> 추가 요청사항
+              <FaComment className="inline mr-2" />{" "}
+              {formData.serviceType === "맞춤 투어"
+                ? "원하는 투어 정보"
+                : "추가 요청사항"}
             </label>
             <textarea
               name="note"
@@ -274,40 +262,43 @@ export default function Home() {
               <strong>카카오톡 ID:</strong> {formData.contact}
             </p>
             <p>
-              <FaCar className="inline mr-2 mb-2" />{" "}
+              <FaCar className="inline mr-2 mb-2" />
               <strong>서비스 유형:</strong> {formData.serviceType}
             </p>
 
             {/* Conditionally render fields based on serviceType */}
-            {formData.serviceType !== "샌딩" && (
+            {formData.serviceType !== "맞춤 투어" && formData.serviceType !== "샌딩" && (
               <p>
                 <FaCalendar className="inline mr-2 mb-2" />
                 <strong>픽업 날짜:</strong> {formData.pickupDate}
               </p>
             )}
 
-            {formData.serviceType !== "픽업" && (
+            {formData.serviceType !== "맞춤 투어" && formData.serviceType !== "픽업" && (
               <p>
                 <FaCalendar className="inline mr-2 mb-2" />
                 <strong>샌딩 날짜:</strong> {formData.dropoffDate}
               </p>
             )}
 
-            {(formData.serviceType === "픽업&샌딩" ||
-              formData.serviceType === "샌딩") && (
+{(formData.serviceType === "픽업&샌딩" ||
+  formData.serviceType === "샌딩") && (
+  <p>
+    <FaMapMarkerAlt className="inline mr-2 mb-2" />
+    <strong>샌딩 미팅 장소:</strong> {formData.meetingAddress || "미입력"}
+  </p>
+)}
+
+
+            {formData.serviceType !== "맞춤 투어" && (
               <p>
-                <FaMapMarkerAlt className="inline mr-2 mb-2" />
-                <strong>샌딩 미팅 장소:</strong> {formData.meetingAddress}
+                <FaPlane className="inline mr-2 mb-2" />
+                <strong>항공편 번호:</strong> {formData.flightNumber}
               </p>
             )}
-
-            <p>
-              <FaPlane className="inline mr-2 mb-2" />
-              <strong>항공편 번호:</strong> {formData.flightNumber}
-            </p>
             <p>
               <FaComment className="inline mr-2" />
-              <strong>추가 요청사항:</strong> {formData.note}
+              <strong>{formData.serviceType === "맞춤 투어" ? "원하는 투어 정보:" : "추가 요청사항:"}</strong> {formData.note}
             </p>
 
             <div className="flex justify-center mt-4 gap-6">
