@@ -123,7 +123,7 @@ export default function Home() {
           >
             <TypeAnimation
               sequence={[
-                "안녕하세요!\n 공항 픽업 & 샌딩 서비스를 개인적으로 운영하고 있습니다. 카카오톡 또는 이 웹사이트로 간편하게 \n예약하시면정해진 시간에 직접 모시러 가겠습니다.",
+                "안녕하세요!\n 공항 픽업 & 샌딩 서비스를 개인적으로 운영하고 있습니다. 카카오톡 또는 이 웹사이트로 간편하게 \n예약하시면 정해진 시간에 직접 모시러 가겠습니다.",
               ]}
               speed={20} // Typing speed
               repeat={0} // No loop
@@ -152,7 +152,7 @@ export default function Home() {
               <br />- 개인 차량 (Toyota Prius)
               <br />
               <span className="font-bold">✔ 탑승 인원</span>
-              <br />- 최대 3명 (짐 크기에 따라 조정)
+              <br />- 최대 3명 (짐 크기에 따라 변경 될 수 있음)
               <br />
               <span className="font-bold">✔ 요금</span>
               <br />- 인원수와 관계없이 동일한 요금 <br />
