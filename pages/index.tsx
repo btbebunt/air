@@ -25,6 +25,17 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isModalOpen]);
+
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -161,7 +172,7 @@ export default function Home() {
       {/* 이미지 슬라이드 모달 */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-md w-[90%] md:w-[400px] overflow-hidden max-h-[90vh] flex flex-col items-center">
+          <div className="bg-white p-6 rounded-md w-[90%] md:w-[400px] overflow-auto max-h-[80vh] flex flex-col items-center">
             <div className="flex justify-between items-center w-full">
               <h2 className="text-lg font-bold mb-4">서비스 이용 후기</h2>
               <button
@@ -172,24 +183,19 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Image display section */}
             <div
               className="relative w-full flex justify-center items-center"
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
             >
-              {isLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                  <div className="spinner-border animate-spin h-10 w-10 border-t-2 border-white rounded-full"></div>
-                </div>
-              )}
+              {isLoading && <div>Loading...</div>}
               <Image
                 src={images[currentImageIndex]}
                 alt={`Slide ${currentImageIndex + 1}`}
                 width={600}
                 height={350}
                 className="w-full h-auto rounded-md"
-                onLoadingComplete={handleImageLoad} // Set loader to false once the image is loaded
+                onLoadingComplete={handleImageLoad}
               />
             </div>
 
