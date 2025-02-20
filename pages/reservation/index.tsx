@@ -212,7 +212,7 @@ export default function Home() {
             </>
           )}
 
-<div>
+          <div>
             <label className="block text-sm mb-1 font-bold">
               <FaComment className="inline mr-2" />{" "}
               {formData.serviceType === "맞춤 투어"
@@ -267,28 +267,30 @@ export default function Home() {
             </p>
 
             {/* Conditionally render fields based on serviceType */}
-            {formData.serviceType !== "맞춤 투어" && formData.serviceType !== "샌딩" && (
+            {formData.serviceType !== "맞춤 투어" &&
+              formData.serviceType !== "샌딩" && (
+                <p>
+                  <FaCalendar className="inline mr-2 mb-2" />
+                  <strong>픽업 날짜:</strong> {formData.pickupDate}
+                </p>
+              )}
+
+            {formData.serviceType !== "맞춤 투어" &&
+              formData.serviceType !== "픽업" && (
+                <p>
+                  <FaCalendar className="inline mr-2 mb-2" />
+                  <strong>샌딩 날짜:</strong> {formData.dropoffDate}
+                </p>
+              )}
+
+            {(formData.serviceType === "픽업&샌딩" ||
+              formData.serviceType === "샌딩") && (
               <p>
-                <FaCalendar className="inline mr-2 mb-2" />
-                <strong>픽업 날짜:</strong> {formData.pickupDate}
+                <FaMapMarkerAlt className="inline mr-2 mb-2" />
+                <strong>샌딩 미팅 장소:</strong>{" "}
+                {formData.meetingAddress || "미입력"}
               </p>
             )}
-
-            {formData.serviceType !== "맞춤 투어" && formData.serviceType !== "픽업" && (
-              <p>
-                <FaCalendar className="inline mr-2 mb-2" />
-                <strong>샌딩 날짜:</strong> {formData.dropoffDate}
-              </p>
-            )}
-
-{(formData.serviceType === "픽업&샌딩" ||
-  formData.serviceType === "샌딩") && (
-  <p>
-    <FaMapMarkerAlt className="inline mr-2 mb-2" />
-    <strong>샌딩 미팅 장소:</strong> {formData.meetingAddress || "미입력"}
-  </p>
-)}
-
 
             {formData.serviceType !== "맞춤 투어" && (
               <p>
@@ -298,7 +300,12 @@ export default function Home() {
             )}
             <p>
               <FaComment className="inline mr-2" />
-              <strong>{formData.serviceType === "맞춤 투어" ? "원하는 투어 정보:" : "추가 요청사항:"}</strong> {formData.note}
+              <strong>
+                {formData.serviceType === "맞춤 투어"
+                  ? "원하는 투어 정보:"
+                  : "추가 요청사항:"}
+              </strong>{" "}
+              {formData.note}
             </p>
 
             <div className="flex justify-center mt-4 gap-6">

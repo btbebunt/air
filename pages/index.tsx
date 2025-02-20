@@ -172,7 +172,7 @@ export default function Home() {
       {/* 이미지 슬라이드 모달 */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-md w-[90%] md:w-[400px] overflow-auto max-h-[80vh] flex flex-col items-center">
+          <div className="bg-white p-6 rounded-md w-[90%] md:w-[400px] overflow-auto max-h-[90vh] flex flex-col items-center">
             <div className="flex justify-between items-center w-full">
               <h2 className="text-lg font-bold mb-4">서비스 이용 후기</h2>
               <button
