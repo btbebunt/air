@@ -39,26 +39,26 @@ export default function Home() {
   const [reservationSuccess, setReservationSuccess] = useState(false); // State for reservation success
   const router = useRouter();
 
-  // const adjustToUTC8 = (datetimeString: string) => {
-  //   if (!datetimeString) return "";
-  //   const date = new Date(datetimeString);
-  //   const localOffset = date.getTimezoneOffset();
-  //   const targetOffset = -480; // UTC+8
-  //   const diff = targetOffset - localOffset;
-  //   date.setMinutes(date.getMinutes() + diff);
-  //   return date.toISOString();
-  // };
+  const adjustToUTC8 = (datetimeString: string) => {
+    if (!datetimeString) return "";
+    const date = new Date(datetimeString);
+    const localOffset = date.getTimezoneOffset();
+    const targetOffset = -480; // UTC+8
+    const diff = targetOffset - localOffset;
+    date.setMinutes(date.getMinutes() + diff);
+    return date.toISOString();
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
 
-    // const adjustedFormData = {
-    //   ...formData,
-    //   pickupDate: adjustToUTC8(formData.pickupDate),
-    //   dropoffDate: adjustToUTC8(formData.dropoffDate),
-    // };
+    const adjustedFormData = {
+      ...formData,
+      pickupDate: adjustToUTC8(formData.pickupDate),
+      dropoffDate: adjustToUTC8(formData.dropoffDate),
+    };
 
     try {
       // Show the confirmation modal
@@ -87,7 +87,11 @@ export default function Home() {
       const response = await fetch("/api/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          pickupDate: adjustToUTC8(formData.pickupDate),
+          dropoffDate: adjustToUTC8(formData.dropoffDate),
+        }),
       });
       if (!response.ok) throw new Error("예약 제출 실패");
       setReservationSuccess(true); // Set success state after confirmation
