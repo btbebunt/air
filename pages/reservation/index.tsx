@@ -175,6 +175,7 @@ export default function Home() {
                   <input
                     type="datetime-local"
                     name="pickupDate"
+                    required
                     className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
                     value={formData.pickupDate}
                     onChange={handleChange}
@@ -190,8 +191,24 @@ export default function Home() {
                   <input
                     type="datetime-local"
                     name="dropoffDate"
+                    required
                     className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
                     value={formData.dropoffDate}
+                    onChange={handleChange}
+                  />
+                </div>
+              )}
+              {formData.serviceType !== "픽업" && (
+                <div>
+                  <label className="block text-sm mb-1 font-bold">
+                    <FaMapMarkerAlt className="inline mr-2" /> 미팅 장소 
+                  </label>
+                  <input
+                    type="text"
+                    name="meetingAddress"
+                    required
+                    className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                    value={formData.meetingAddress}
                     onChange={handleChange}
                   />
                 </div>
