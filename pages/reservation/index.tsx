@@ -230,7 +230,7 @@ export default function Home() {
             <textarea
               name="note"
               rows={3}
-              className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600"
+              className="w-full p-3 rounded-md bg-gray-800 border border-gray-600"
               value={formData.note}
               onChange={handleChange}
             ></textarea>
