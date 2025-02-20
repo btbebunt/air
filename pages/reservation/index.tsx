@@ -125,7 +125,7 @@ export default function Home() {
             <input
               type="text"
               name="name"
-              className="w-full p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+              className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
               value={formData.name}
               onChange={handleChange}
             />
@@ -139,7 +139,7 @@ export default function Home() {
               type="text"
               name="contact"
               required
-              className="w-full p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
+              className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
               value={formData.contact}
               onChange={handleChange}
             />
@@ -151,7 +151,7 @@ export default function Home() {
             </label>
             <select
               name="serviceType"
-              className="w-full p-3 rounded-md bg-gray-800 border border-gray-600"
+              className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600"
               value={formData.serviceType}
               onChange={handleChange}
             >
@@ -170,7 +170,7 @@ export default function Home() {
                 type="datetime-local"
                 name="pickupDate"
                 required
-                className="w-full p-3 rounded-md bg-gray-800 border border-gray-600"
+                className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-blue-500"
                 value={formData.pickupDate}
                 onChange={handleChange}
               />
@@ -186,7 +186,7 @@ export default function Home() {
                 type="datetime-local"
                 name="dropoffDate"
                 required
-                className="w-full p-3 rounded-md bg-gray-800 border border-gray-600"
+                className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600"
                 value={formData.dropoffDate}
                 onChange={handleChange}
               />
@@ -202,7 +202,7 @@ export default function Home() {
               <input
                 type="text"
                 name="meetingAddress"
-                className="w-full p-3 rounded-md bg-gray-800 border border-gray-600"
+                className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600"
                 value={formData.meetingAddress}
                 onChange={handleChange}
                 placeholder="예: 서울역 입구"
@@ -217,7 +217,7 @@ export default function Home() {
             <input
               type="text"
               name="flightNumber"
-              className="w-full p-3 rounded-md bg-gray-800 border border-gray-600"
+              className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600"
               value={formData.flightNumber}
               onChange={handleChange}
             />
@@ -230,7 +230,7 @@ export default function Home() {
             <textarea
               name="note"
               rows={3}
-              className="w-full p-3 rounded-md bg-gray-800 border border-gray-600"
+              className="w-full h-[50px] p-3 rounded-md bg-gray-800 border border-gray-600"
               value={formData.note}
               onChange={handleChange}
             ></textarea>
