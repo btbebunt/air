@@ -17,7 +17,7 @@ async function getActiveTours() {
 
 export default async function HomePage() {
   const tours = await getActiveTours()
-  const featuredTour = tours[0] ?? null
+  const featuredTours = tours.slice(0, 2)
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -53,53 +53,71 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 투어 배너 */}
-      {featuredTour && (
-        <section className="py-10 sm:py-14 bg-gradient-to-r from-emerald-600 to-teal-600">
+      {/* 투어 섹션 */}
+      {featuredTours.length > 0 && (
+        <section className="py-10 sm:py-14 bg-gradient-to-br from-emerald-600 to-teal-700">
           <div className="max-w-5xl mx-auto px-4">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
-              <div className="text-white text-center md:text-left">
-                <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                  <Star size={16} className="fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm font-semibold text-emerald-200">
-                    매주 주말 · {tours.length}개 투어 운영 중
-                  </span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-bold mb-2">{featuredTour.name}</h2>
-                <p className="text-emerald-100 text-sm sm:text-base max-w-md mb-3">{featuredTour.short_description}</p>
-                <div className="flex items-center justify-center md:justify-start gap-4 text-sm text-emerald-200 flex-wrap">
-                  {featuredTour.duration && (
-                    <div className="flex items-center gap-1">
-                      <Clock size={14} />
-                      <span>{featuredTour.duration}</span>
-                    </div>
-                  )}
-                  {featuredTour.meeting_point && (
-                    <div className="flex items-center gap-1">
-                      <MapPin size={14} />
-                      <span>{featuredTour.meeting_point}</span>
-                    </div>
-                  )}
-                </div>
+            {/* 섹션 헤더 */}
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Star size={16} className="fill-yellow-400 text-yellow-400" />
+                <span className="text-sm font-semibold text-emerald-200">
+                  매주 주말 · {tours.length}개 투어 운영 중
+                </span>
               </div>
-              <div className="text-center shrink-0">
-                <div className="text-sm text-emerald-200 mb-1">
-                  {tours.length > 1 ? `${tours.length}개 투어` : '1인당'}
-                </div>
-                <div className="text-3xl font-bold text-white mb-0.5">
-                  {tours.length > 1
-                    ? `₮${Number(Math.min(...tours.map(t => t.price))).toLocaleString()}~`
-                    : `₮${Number(featuredTour.price).toLocaleString()}`}
-                </div>
-                <div className="text-sm text-emerald-200 mb-4">부터</div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">인기 투어</h2>
+            </div>
+
+            {/* 투어 카드 그리드 */}
+            <div className={`grid gap-4 ${featuredTours.length === 1 ? 'max-w-sm mx-auto' : 'sm:grid-cols-2'}`}>
+              {featuredTours.map(tour => (
+                <Link
+                  key={tour.id}
+                  href={`/tours/${tour.id}`}
+                  className="group bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 rounded-2xl p-5 transition-all hover:shadow-xl hover:-translate-y-0.5"
+                >
+                  <h3 className="text-lg font-bold text-white mb-1.5 group-hover:text-yellow-300 transition-colors">
+                    {tour.name}
+                  </h3>
+                  <p className="text-emerald-100 text-sm mb-4 line-clamp-2">{tour.short_description}</p>
+                  <div className="flex items-center gap-3 text-sm text-emerald-200 mb-4 flex-wrap">
+                    {tour.duration && (
+                      <div className="flex items-center gap-1">
+                        <Clock size={13} />
+                        <span>{tour.duration}</span>
+                      </div>
+                    )}
+                    {tour.meeting_point && (
+                      <div className="flex items-center gap-1">
+                        <MapPin size={13} />
+                        <span>{tour.meeting_point}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-2xl font-bold text-white">₮{Number(tour.price).toLocaleString()}</span>
+                      <span className="text-sm text-emerald-200 ml-1">/ 1~3인</span>
+                    </div>
+                    <span className="flex items-center gap-1 text-sm font-semibold text-white bg-white/20 px-3 py-1.5 rounded-lg group-hover:bg-white/30 transition-colors">
+                      예약 <ChevronRight size={14} />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* 전체 보기 링크 */}
+            {tours.length > 2 && (
+              <div className="text-center mt-6">
                 <Link
                   href="/tours"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-semibold rounded-xl hover:bg-emerald-50 transition-colors shadow-lg text-sm sm:text-base"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-semibold rounded-xl hover:bg-emerald-50 transition-colors shadow-lg text-sm"
                 >
-                  투어 목록 보기 <ChevronRight size={16} />
+                  전체 투어 보기 ({tours.length}개) <ChevronRight size={16} />
                 </Link>
               </div>
-            </div>
+            )}
           </div>
         </section>
       )}

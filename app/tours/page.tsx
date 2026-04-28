@@ -24,7 +24,7 @@ export default async function ToursPage() {
       {/* 네비게이션 */}
       <nav className="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-white/10">
         <div className="max-w-6xl mx-auto px-4 flex items-center h-14 gap-4">
-          <BackButton />
+          <BackButton href="/" />
           <div className="flex items-center gap-1.5 text-slate-400 text-sm">
             <Plane size={14} />
             <Link href="/" className="font-medium hover:text-white transition-colors">셔틀 몽골리아</Link>
@@ -118,9 +118,9 @@ export default async function ToursPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-xl font-bold text-emerald-700">
-                        ₮{Number(tour.price).toLocaleString()}~
+                        ₮{Number(tour.price).toLocaleString()}
                       </div>
-                      <div className="text-xs text-slate-400">최대 {tour.max_passengers}명</div>
+                      <div className="text-xs text-slate-400">1~3인 동일가</div>
                     </div>
                     <span className="flex items-center gap-1 text-sm font-semibold text-emerald-600 group-hover:gap-2 transition-all">
                       예약하기 <ChevronRight size={16} />

@@ -40,20 +40,24 @@ export async function notifyNewBooking(
     ? `🚗 <b>Vehicle:</b> ${booking.vehicle_type.name}`
     : '🚗 <b>Vehicle:</b> Not specified'
 
+  const pickupInfo = booking.pickup_location
+    ? `\n📍 <b>픽업 장소:</b> ${booking.pickup_location}`
+    : ''
+
   const text = `
 🔔 <b>NEW SHUTTLE BOOKING</b>
 
 👤 <b>Name:</b> ${booking.full_name}
 💬 <b>KakaoTalk:</b> ${booking.kakaotalk_id || 'N/A'}
 👥 <b>Passengers:</b> ${booking.passenger_count}
-🧳 <b>Luggage:</b> ${booking.luggage_count} piece(s)${booking.luggage_volume ? ` (${booking.luggage_volume})` : ''}
+🧳 <b>Luggage:</b> ${booking.luggage_count} piece(s)${booking.luggage_volume ? ` (${booking.luggage_volume})` : ''}${pickupInfo}
 
 ${flightInfo}
 ${vehicleInfo}
 💰 <b>Total Price:</b> ${booking.total_price ? `₮${booking.total_price.toLocaleString()}` : 'TBD'}
 
 📝 <b>Notes:</b> ${booking.notes || 'None'}
-🆔 <b>Booking ID:</b> <code>${booking.id}</code>
+🆔 <b>예약 번호:</b> <code>${booking.booking_number || booking.id}</code>
 ⏰ <b>Booked at:</b> ${new Date(booking.created_at).toLocaleString('en-US', { timeZone: 'Asia/Ulaanbaatar' })}
   `.trim()
 
@@ -81,7 +85,7 @@ export async function notifyNewTourBooking(
 💰 <b>Total Price:</b> ${booking.total_price ? `₮${booking.total_price.toLocaleString()}` : 'TBD'}
 
 📝 <b>Notes:</b> ${booking.notes || 'None'}
-🆔 <b>Booking ID:</b> <code>${booking.id}</code>
+🆔 <b>예약 번호:</b> <code>${booking.booking_number || booking.id}</code>
 ⏰ <b>Booked at:</b> ${new Date(booking.created_at).toLocaleString('en-US', { timeZone: 'Asia/Ulaanbaatar' })}
   `.trim()
 

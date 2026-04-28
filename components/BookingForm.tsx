@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { User, MessageCircle, Users, Luggage, Car, ChevronRight, CheckCircle, AlertCircle, Minus, Plus, Copy, Check, MapPin, Clock } from 'lucide-react'
+import { User, MessageCircle, Users, Luggage, Car, ChevronRight, CheckCircle, AlertCircle, Minus, Plus, Copy, Check, MapPin, Clock, Building2 } from 'lucide-react'
 import { Flight, VehicleType } from '@/types'
 
 const UBN_TZ = 'Asia/Ulaanbaatar'
@@ -33,12 +33,22 @@ interface Props {
   vehicles: VehicleType[]
 }
 
-const LUGGAGE_OPTIONS = [
-  { value: 'Small (cabin bag)', label: '소형 (기내용)' },
-  { value: 'Medium (check-in bag)', label: '중형 (위탁수하물)' },
-  { value: 'Large (oversized)', label: '대형 (초과 수하물)' },
-  { value: 'Mixed sizes', label: '혼합' },
+const LUGGAGE_SIZES = [
+  { value: 'small', label: '소형', sub: '기내용', icon: '🎒' },
+  { value: 'medium', label: '중형', sub: '위탁수하물', icon: '🧳' },
+  { value: 'large', label: '대형', sub: '초과수하물', icon: '📦' },
 ]
+
+function luggageSummary(items: string[]): string {
+  const filled = items.filter(Boolean)
+  if (!filled.length) return '미입력'
+  const counts: Record<string, number> = {}
+  for (const v of filled) counts[v] = (counts[v] || 0) + 1
+  return LUGGAGE_SIZES
+    .filter(s => counts[s.value])
+    .map(s => `${s.label} ${counts[s.value]}개`)
+    .join(', ')
+}
 
 export default function BookingForm({ flight, vehicles }: Props) {
   const router = useRouter()
@@ -49,12 +59,15 @@ export default function BookingForm({ flight, vehicles }: Props) {
   const [bookingId, setBookingId] = useState('')
   const [bookingNumber, setBookingNumber] = useState('')
 
+  const isDeparture = flight.flight_type === 'arrival' // UBN→ICN 출발편
+
   const [form, setForm] = useState({
     full_name: '',
     kakaotalk_id: '',
     passenger_count: 1,
     luggage_count: 0,
-    luggage_volume: '',
+    luggage_items: [] as string[], // 개별 수하물 크기 ('small' | 'medium' | 'large' | '')
+    pickup_location: '',
     vehicle_type_id: vehicles[0]?.id || '',
     notes: '',
   })
@@ -62,16 +75,33 @@ export default function BookingForm({ flight, vehicles }: Props) {
   const selectedVehicle = vehicles.find(v => v.id === form.vehicle_type_id)
   const totalPrice = selectedVehicle ? selectedVehicle.base_price : 0
 
-  const updateCount = (field: 'passenger_count' | 'luggage_count', delta: number) => {
+  const updatePassengerCount = (delta: number) => {
     setForm(prev => ({
       ...prev,
-      [field]: Math.max(0, Math.min(field === 'passenger_count' ? (selectedVehicle?.capacity || 8) : 20, prev[field] + delta)),
+      passenger_count: Math.max(1, Math.min(selectedVehicle?.capacity || 8, prev.passenger_count + delta)),
     }))
+  }
+
+  const updateLuggageCount = (delta: number) => {
+    setForm(prev => {
+      const next = Math.max(0, Math.min(20, prev.luggage_count + delta))
+      const items = Array.from({ length: next }, (_, i) => prev.luggage_items[i] ?? '')
+      return { ...prev, luggage_count: next, luggage_items: items }
+    })
+  }
+
+  const setLuggageItem = (idx: number, value: string) => {
+    setForm(prev => {
+      const items = [...prev.luggage_items]
+      items[idx] = items[idx] === value ? '' : value
+      return { ...prev, luggage_items: items }
+    })
   }
 
   const handleSubmit = async () => {
     if (!form.full_name.trim()) { setError('이름을 입력해 주세요.'); return }
     if (!form.kakaotalk_id.trim()) { setError('카카오톡 ID를 입력해 주세요.'); return }
+    if (isDeparture && !form.pickup_location.trim()) { setError('픽업 장소를 입력해 주세요.'); return }
     if (!form.vehicle_type_id) { setError('차량을 선택해 주세요.'); return }
 
     setLoading(true)
@@ -87,7 +117,8 @@ export default function BookingForm({ flight, vehicles }: Props) {
           kakaotalk_id: form.kakaotalk_id.trim() || null,
           passenger_count: form.passenger_count,
           luggage_count: form.luggage_count,
-          luggage_volume: form.luggage_volume || null,
+          luggage_volume: form.luggage_count > 0 ? luggageSummary(form.luggage_items) : null,
+          pickup_location: form.pickup_location.trim() || null,
           vehicle_type_id: form.vehicle_type_id,
           total_price: totalPrice,
           notes: form.notes.trim() || null,
@@ -186,52 +217,91 @@ export default function BookingForm({ flight, vehicles }: Props) {
               />
             </div>
 
+            {isDeparture && (
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                  <Building2 size={14} className="inline mr-1" />
+                  픽업 장소 <span className="text-red-500">*</span>
+                  <span className="text-xs text-slate-400 font-normal ml-1">(호텔명 또는 주소)</span>
+                </label>
+                <input
+                  type="text"
+                  value={form.pickup_location}
+                  onChange={e => setForm(p => ({ ...p, pickup_location: e.target.value }))}
+                  placeholder="예) J 호텔, 칭기스 호텔, ..."
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent text-slate-900 placeholder-slate-400"
+                />
+              </div>
+            )}
+
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">
                 <Users size={14} className="inline mr-1" />
                 탑승 인원
               </label>
               <div className="flex items-center gap-3">
-                <button onClick={() => updateCount('passenger_count', -1)} className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors">
+                <button onClick={() => updatePassengerCount(-1)} className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors">
                   <Minus size={16} />
                 </button>
                 <span className="text-xl font-bold text-slate-900 w-8 text-center">{form.passenger_count}</span>
-                <button onClick={() => updateCount('passenger_count', 1)} className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors">
+                <button onClick={() => updatePassengerCount(1)} className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors">
                   <Plus size={16} />
                 </button>
                 <span className="text-sm text-slate-400">명</span>
               </div>
             </div>
 
+            {/* 수하물 */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">
                 <Luggage size={14} className="inline mr-1" />
                 수하물 개수
               </label>
               <div className="flex items-center gap-3">
-                <button onClick={() => updateCount('luggage_count', -1)} className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors">
+                <button onClick={() => updateLuggageCount(-1)} className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors">
                   <Minus size={16} />
                 </button>
                 <span className="text-xl font-bold text-slate-900 w-8 text-center">{form.luggage_count}</span>
-                <button onClick={() => updateCount('luggage_count', 1)} className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors">
+                <button onClick={() => updateLuggageCount(1)} className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors">
                   <Plus size={16} />
                 </button>
                 <span className="text-sm text-slate-400">개</span>
               </div>
             </div>
 
+            {/* 수하물 개별 크기 선택 */}
             {form.luggage_count > 0 && (
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">수하물 크기</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {LUGGAGE_OPTIONS.map(opt => (
-                    <button
-                      key={opt.value}
-                      onClick={() => setForm(p => ({ ...p, luggage_volume: p.luggage_volume === opt.value ? '' : opt.value }))}
-                      className={`px-3 py-2.5 text-sm rounded-xl border text-left transition-all ${form.luggage_volume === opt.value ? 'border-sky-500 bg-sky-50 text-sky-700 font-medium' : 'border-slate-200 text-slate-600 hover:border-slate-300'}`}
-                    >
-                      {opt.label}
-                    </button>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-slate-700">각 수하물 크기 선택</p>
+                <div className="space-y-2">
+                  {form.luggage_items.map((selected, idx) => (
+                    <div key={idx} className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                      <span className="text-sm font-semibold text-slate-500 w-14 shrink-0">
+                        수하물 {idx + 1}
+                      </span>
+                      <div className="flex gap-1.5 flex-wrap">
+                        {LUGGAGE_SIZES.map(size => (
+                          <button
+                            key={size.value}
+                            type="button"
+                            onClick={() => setLuggageItem(idx, size.value)}
+                            className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                              selected === size.value
+                                ? 'bg-sky-600 border-sky-600 text-white shadow-sm'
+                                : 'bg-white border-slate-200 text-slate-600 hover:border-sky-300 hover:text-sky-600'
+                            }`}
+                          >
+                            <span>{size.icon}</span>
+                            <span>{size.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                      {selected && (
+                        <span className="ml-auto text-xs text-slate-400 shrink-0">
+                          {LUGGAGE_SIZES.find(s => s.value === selected)?.sub}
+                        </span>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -252,6 +322,7 @@ export default function BookingForm({ flight, vehicles }: Props) {
               onClick={() => {
                 if (!form.full_name.trim()) { setError('이름을 입력해 주세요.'); return }
                 if (!form.kakaotalk_id.trim()) { setError('카카오톡 ID를 입력해 주세요.'); return }
+                if (isDeparture && !form.pickup_location.trim()) { setError('픽업 장소를 입력해 주세요.'); return }
                 setError('')
                 setStep(2)
               }}
@@ -340,8 +411,9 @@ export default function BookingForm({ flight, vehicles }: Props) {
             {[
               { label: '이름', value: form.full_name },
               { label: '카카오톡 ID', value: form.kakaotalk_id || '—' },
+              ...(isDeparture ? [{ label: '픽업 장소', value: form.pickup_location || '—' }] : []),
               { label: '탑승 인원', value: `${form.passenger_count}명` },
-              { label: '수하물', value: `${form.luggage_count}개${form.luggage_volume ? ` (${LUGGAGE_OPTIONS.find(o => o.value === form.luggage_volume)?.label || form.luggage_volume})` : ''}` },
+              { label: '수하물', value: form.luggage_count === 0 ? '없음' : `${form.luggage_count}개 — ${luggageSummary(form.luggage_items)}` },
               { label: '차량', value: selectedVehicle?.name || '—' },
               { label: '요청사항', value: form.notes || '—' },
             ].map(({ label, value }) => (

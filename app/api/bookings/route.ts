@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const {
       flight_id, full_name, kakaotalk_id, passenger_count,
-      luggage_count, luggage_volume, vehicle_type_id, total_price, notes,
+      luggage_count, luggage_volume, pickup_location, vehicle_type_id, total_price, notes,
     } = body
 
     if (!full_name) {
@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
         passenger_count: passenger_count || 1,
         luggage_count: luggage_count || 0,
         luggage_volume: luggage_volume || null,
+        pickup_location: pickup_location || null,
         vehicle_type_id: vehicle_type_id || null,
         total_price: total_price || null,
         notes: notes || null,

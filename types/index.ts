@@ -31,6 +31,7 @@ export interface Flight {
 
 export interface Booking {
   id: string
+  booking_number: string | null
   flight_id: string | null
   full_name: string
   kakaotalk_id: string | null
@@ -38,6 +39,7 @@ export interface Booking {
   luggage_count: number
   luggage_volume: string | null
   vehicle_type_id: string | null
+  pickup_location: string | null
   total_price: number | null
   status: BookingStatus
   notes: string | null
@@ -88,6 +90,7 @@ export interface TourDate {
 
 export interface TourBooking {
   id: string
+  booking_number: string | null
   tour_date_id: string
   full_name: string
   kakaotalk_id: string | null
