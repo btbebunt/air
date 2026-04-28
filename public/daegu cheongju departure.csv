@@ -1,0 +1,8 @@
+Flight,from,Airline,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sun,"Valid
+date"
+,,,Arrival time,Arrival time,Arrival time,Arrival time,Arrival time,Arrival time,Arrival time,
+TWB424,Daegu,,,,,,1:50,,,2026-04-23 - 2026-05-20
+TWB424,Daegu,,1:50,,1:50,,1:50,,1:50,2026-05-21 - 2026-10-18
+TWB426,Cheongju,,,,1:55,,,,,2026-04-22 - 2026-05-22
+EOK422,Cheongju,,2:05,2:05,,2:05,,2:05,,2026-04-23 - 2026-10-24
+TWB426,Cheongju,,,,,1:55,,,1:55,2026-05-23 - 2026-10-17

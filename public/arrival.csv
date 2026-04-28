@@ -1,0 +1,20 @@
+Flight,from,Airline,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sun,"Valid
+date"
+,,,Arrival time,Arrival time,Arrival time,Arrival time,Arrival time,Arrival time,Arrival time,
+MGL302,Seoul/Incheon,miat,,,,,,17:00,17:00,2026-03-29 - 2026-10-24
+MGL308,Seoul/Incheon,miat,2:45,,2:45,,,2:45,2:45,2026-03-29 - 2026-10-24
+KAL2041,Seoul/Incheon,KA,,,,,,11:10,11:10,2026-03-29 - 2026-05-31
+AAR567,Seoul/Incheon,Asiana,23:05,,23:05,,,23:05,,2026-03-29 - 2026-10-25
+JJA5203,Seoul/Incheon,Jeju,,,,,,,12:40,2026-03-29 - 2026-10-24
+MNG602,Seoul/Incheon,Aero,19:35,,,,,,,2026-03-30 - 2026-10-19
+MNG602,Seoul/Incheon,Aero,,,,,,18:35,,2026-04-01 - 2026-10-24
+MGL308,Seoul/Incheon,Miat,,2:45,,2:45,2:45,,,2026-06-01 - 2026-09-30
+MGL310,Seoul/Incheon,Miat,4:30,4:30,4:30,4:30,4:30,4:30,4:30,2026-06-01 - 2026-10-01
+KAL2041,Seoul/Incheon,KA,,,,,,11:10,11:10,2026-06-01 - 2026-10-04
+AAR567,Seoul/Incheon,Asiana,,23:05,,,23:05,,,2026-06-01 - 2026-09-30
+JJA5203,Seoul/Incheon,Jeju,,,,,,12:40,,2026-06-01 - 2026-09-30
+TWB421,Seoul/Incheon,Tway,,,,,,,13:20,2026-06-01 - 2026-09-30
+MNG602,Seoul/Incheon,Aero,,,,19:35,,,,2026-06-04 - 2026-09-24
+MNG602,Seoul/Incheon,Aero,,,,,19:35,,19:35,2026-06-05 - 2026-09-27
+KAL2045,Seoul/Incheon,KA,,,,,,,22:50,2026-06-07 - 2026-09-28
+KAL2041,Seoul/Incheon,KA,,,,,,11:10,11:10,2026-10-05 - 2026-10-24
